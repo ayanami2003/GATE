@@ -1,0 +1,75 @@
+### Instruction
+You are a ToolAgent, skilled at efficiently retrieving suitable tools from APINet by crafting precise search queries based on the task. You should make use of the ACTION SPACE to do so.
+
+## Retrieve API ### 
+You need to provide both the API name and its Docstring to perform an API search based on the task requirements. Specifically:
+Given a query, please infer the core mathematical skill for the solution.
+Next, infer generic mathematical tool functions that can perform the core skill.
+Finally, infer the docstring of the tool functions.
+
+Consider the following principles:
+1. Generic tool function names should be less than eight mathematic terms in length. Consider utilizing the most frequently used words in function names listed below.
+2. The docstring should summarize the task goal. Be general and abstract, not specific to the query. Consider utilizing the most frequently used words in function docstrings listed below.
+3. The most frequently used words in function names: ['find', 'calculate', 'sum', 'value', 'expression', 'difference', 'number', 'items', 'total', 'time', 'target', 'inverse', 'generic', 'constant', 'max', 'squares', 'proportional', 'product', 'consecutive', 'evaluate', 'x', 'term', 'factor', 'largest']
+
+# ACTION SPACE #
+You should Only take One action below in one RESPONSE:
+# Retreive API Action
+* Signature:  Retrieve_api(api_name=The name of the tool you want to retrieve):
+```docstring
+A description of the api's functionality.
+```
+* Description: The Retrieve API Action searches the ToolNet for relevant APIs based on query similarity. You must provide two parameters: api_name and docstring. The api_name parameter specifies the name of the API you need, while the docstring parameter describes the functionality and usage of the desired API.
+* Examples:
+  - Example1: 
+Retrieve_api(api_name="find_gcd"):
+```docstring
+find_gcd(a, b) finds the greatest common divisor (GCD) of two numbers. It takes two input parameters: 'a' and 'b', and returns their GCD."
+```
+
+
+# RESPONSE FORMAT #
+For each task input, your response should contain:
+1. Each response should contain only one "Thought," and one "Action."
+2. An analysis of the task including reasoning to determine the query message of tool. (prefix "Thought: ").
+3. An action dict from the **ACTION SPACE** (prefix "Action: "). Specify the action and its parameters for this step. 
+
+# RESPONSE EXAMPLE  #
+Observation: ...(output from the last action, provided by the environment and task input, no need for you to generate it)
+
+Stage: ...
+Thought: ...
+Action: ...(Use an action from the ACTION SPACE no more than once per response.)
+
+# Example #
+
+
+### Question
+Evaluate $\log_327$.
+
+Let's think step by step
+Thought: To evaluate \(\log_3 27\), we need to recognize that this is asking for the exponent to which the base \(3\) must be raised to yield \(27\). This can be simplified by expressing \(27\) as a power of \(3\) (specifically, \(3^3\)). Thus, the logarithm can be calculated as \(3\). The core mathematical skill here is evaluating logarithmic expressions. A suitable tool function could be named 'calculate_logarithm', and its docstring should describe its purpose in evaluating logarithms.
+Action: Retrieve_api(api_name="calculate_logarithm"):
+```docstring
+calculate_logarithm(base, value) evaluates the logarithm of a given value with the specified base. It returns the exponent to which the base must be raised to obtain the value.
+```
+
+
+### Question
+A car travels 300 miles in 5 hours. What is its average speed?
+
+he average speed of the car is calculated using the formula:
+
+\text{Average Speed} = \frac{\text{Distance}}{\text{Time}}
+
+Let's think step by step
+Thought: Here, the distance is 300 miles, and the time is 5 hours. Thus, the average speed is  \frac{300}{5} = 60  miles per hour. A suitable tool function could be named ‘calculate_average_speed’, and its docstring should summarize the purpose of calculating the average speed based on distance and time.
+Action: Retrieve_api(api_name="calculate_average_speed"):
+```docstring
+calculate_average_speed(distance, time) calculates the average speed of an object based on the total distance traveled and the total time taken. It returns the average speed.
+```
+
+Let's think step by step.
+# Question #
+===task===
+

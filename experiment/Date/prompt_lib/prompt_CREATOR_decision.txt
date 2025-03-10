@@ -1,0 +1,156 @@
+### Instruction
+You are given a date reasoning question, and the related tools that may help you solve the question.
+Now you need to call the tool to solve the problem.
+Read carefully about the tool's parameters, returns and how to use the tool.
+
+## Examples 
+
+### Question
+
+In the US, Thanksgiving is on the fourth Thursday of November. Today is the US Thanksgiving of 2001. What is the date one week from today in MM/DD/YYYY?
+
+### Tools
+
+```python
+from datetime import date
+from dateutil.relativedelta import relativedelta
+import calendar
+
+def get_date_one_week_from_us_thanksgiving(year):
+    """
+    Calculate the date one week from Thanksgiving in a given year.
+    Thanksgiving in the US is on the fourth Thursday of November.
+    Args:
+        year (int): The year for which to calculate Thanksgiving's date.
+    Returns:
+        str: The date one week from Thanksgiving in MM/DD/YYYY format.
+    """
+    # 1. Find the first Thursday of November
+    date_1st_thu = date(year, 11, 1)
+    while date_1st_thu.weekday() != calendar.THURSDAY:
+        date_1st_thu += relativedelta(days=1)
+    # 2. Calculate the fourth Thursday
+    days_from_1st_to_4th_thu = (4 - 1) * 7
+    date_thanksgiving = date_1st_thu + relativedelta(days=days_from_1st_to_4th_thu)
+    # 3. Add one week
+    date_one_week_from_thanksgiving = date_thanksgiving + relativedelta(weeks=1)
+    # 4. Return in MM/DD/YYYY format
+    return date_one_week_from_thanksgiving.strftime("%m/%d/%Y")
+```
+
+### Solution Code
+```python
+print(calculate_date_one_week_from_thanksgiving(2001))
+```
+
+### Question
+
+Yesterday was 12/31/1929. Today could not be 12/32/1929 because December has only 31 days. What is the date tomorrow in MM/DD/YYYY?
+
+### Tools
+```python
+def calculate_tomorrow_from_yesterday(yesterday):
+    """
+    Calculate the date tomorrow based on yesterday's date.
+
+    Args:
+        yesterday (str): Yesterday's date in MM/DD/YYYY format.
+
+    Returns:
+        str: Tomorrow's date in MM/DD/YYYY format.
+    """
+    from datetime import datetime
+    from dateutil.relativedelta import relativedelta
+    # Parse yesterday's date
+    date_yesterday = datetime.strptime(yesterday, "%m/%d/%Y").date()
+    # Calculate today's date
+    date_today = date_yesterday + relativedelta(days=1)
+    # Calculate tomorrow's date
+    date_tomorrow = date_today + relativedelta(days=1)
+    return date_tomorrow.strftime("%m/%d/%Y")
+```
+
+### Solution Code
+```python
+print(calculate_tomorrow_from_yesterday("12/31/1929"))
+```
+
+### Question
+
+The day before yesterday was 11/23/1933. What is the date one week from today in MM/DD/YYYY?
+
+### Tools
+```python
+def calculate_one_week_from_today(day_before_yesterday):
+    """
+    Calculate the date one week from today, given the day before yesterday's date.
+
+    Args:
+        day_before_yesterday (str): The day before yesterday's date in MM/DD/YYYY format.
+
+    Returns:
+        str: The date one week from today in MM/DD/YYYY format.
+    """
+    from datetime import datetime
+    from dateutil.relativedelta import relativedelta
+    # Parse the day before yesterday's date
+    date_day_before_yesterday = datetime.strptime(day_before_yesterday, "%m/%d/%Y").date()
+    # Calculate today's date
+    date_today = date_day_before_yesterday + relativedelta(days=2)
+    # Calculate the date one week from today
+    date_one_week_from_today = date_today + relativedelta(weeks=1)
+    return date_one_week_from_today.strftime("%m/%d/%Y")
+```
+
+### Solution Code
+```python
+print(calculate_one_week_from_today("11/23/1933"))
+```
+
+### Question
+
+Today's meeting is rescheduled to 11 am tomorrow, 10/16/1924. What is the date today in MM/DD/YYYY?
+
+### Tools
+```python
+def calculate_today_from_rescheduled_meeting(meeting_date):
+    """
+    Calculate today's date based on a meeting rescheduled to tomorrow.
+
+    Args:
+        meeting_date (str): The rescheduled meeting date in MM/DD/YYYY format.
+
+    Returns:
+        str: Today's date in MM/DD/YYYY format.
+    """
+    from datetime import datetime
+    from dateutil.relativedelta import relativedelta
+    # Parse the meeting date
+    date_meeting = datetime.strptime(meeting_date, "%m/%d/%Y").date()
+    # Calculate today's date
+    date_today = date_meeting - relativedelta(days=1)
+    return date_today.strftime("%m/%d/%Y")
+```
+
+### Solution Code
+```python
+print(calculate_today_from_rescheduled_meeting("10/16/1924"))
+```
+
+===example===
+
+
+## Begin!
+Let’s begin to solve the question below.
+
+### Question
+
+===task===
+
+### Tools
+
+```python
+===api===
+```
+
+### Solution Code

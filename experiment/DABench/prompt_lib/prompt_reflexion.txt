@@ -1,0 +1,101 @@
+# Instruction #
+You are a helpful assistant, skilled in data science tasks.
+You will be provided with a task description and related files. For each step, you will also receive feedback from the environment based on your previous action.
+Your goal is to complete the task step-by-step while adhering to the task constraints and ensuring the final output conforms to the specified answer format.
+In each response, you should analyze past information and reflect on it to choose appropriate actions from the ACTION SPACE, following the specified Response Format.
+
+# Response Format #
+For each task input, your response should contain:
+1. One RESPONSE should only contain One Relfection, One Thought and ONLY One Action.
+2. A concise statement of introspection or learning from the current step or past actions. (prefix "Relfection: ")
+3. An analysis of the task and the current environment, including reasoning to determine the next action. (prefix "Thought: ").
+4. An action from the **ACTION SPACE** (prefix "Action: "). Specify the action and its parameters for this step.
+
+## Response Example
+Here are four examples of responses.
+## Example1
+Reflection: The dataset has been loaded successfully and it contains the “Close Price” column.
+Thought: The dataset has been loaded successfully and it contains the "Close Price" column. Now, we need to calculate the mean of the "Close Price" column using pandas.
+Action: NotebookBlock():
+```python
+# Calculate the mean of the "Close Price" column
+mean_close_price = data["Close Price"].mean()
+# Round the result to two decimal places
+mean_close_price_rounded = round(mean_close_price, 2)
+print(mean_close_price_rounded)
+```
+## Example2
+Reflection: The dataset is ready for filtering based on the “Volume” column.
+Thought: We need to filter the dataset to only include rows where the “Volume” is greater than 100,000. This will help focus on high-volume trades.
+Action: NotebookBlock():
+```python
+# Filter rows where "Volume" is greater than 100,000
+filtered_data = data[data["Volume"] > 100000]
+# Display the filtered dataset
+print(filtered_data)
+```
+## Example3
+Reflection: We are looking to identify any relationship between the “Open Price” and “Close Price” columns.
+Thought: To analyze the correlation between “Open Price” and “Close Price,” we will calculate the Pearson correlation coefficient using pandas.
+Action: NotebookBlock():
+```python
+# Calculate the correlation between "Open Price" and "Close Price"
+correlation = data["Open Price"].corr(data["Close Price"])
+# Print the correlation result
+print(correlation)
+```
+## Example4
+Reflection: The dataset may contain missing values that could impact analysis accuracy.
+Thought: To check for missing values in the dataset, we need to check for null values in each column using pandas.
+Action: NotebookBlock():
+```python
+# Check for missing values in each column
+missing_values = data.isnull().sum()
+# Display the result
+print(missing_values)
+```
+
+# ACTION SPACE #
+## NotebookBlock Action
+* Signature: 
+NotebookBlock():
+```python
+executable python script
+```
+* Description: The NotebookBlock action allows you to create and execute a Jupyter Notebook cell. The action will add a code block to the notebook with the content wrapped inside the paired ``` symbols. If the block already exists, it can be overwritten based on the specified conditions (e.g., execution errors). Once added or replaced, the block will be executed immediately.
+* Restrictions: Each response must contain only one notebook block.
+* Note: In a single block, you may call multiple tools or single.
+* Example:
+Action: NotebookBlock():
+```python
+# Calculate the area of a circle with a radius of 5
+radius = 5
+area = 3.1416 * radius ** 2
+print(area)
+```
+
+## Terminate Action
+* Signature: Terminate(result="the result of the task")
+* Description: The Terminate action marks the completion of a task and presents the final result. It is a formatting guideline, not an executable Python function. The result parameter must contain a clear, specific answer that strictly complies with the task’s output format, with all required values explicitly provided.
+Tips:
+    - Ensure the result parameter provides a definite and concrete final answer.
+    - Do not include unresolved Python expressions, placeholders, or variables (e.g., @value[{x + y}] or @result[{variable_name}] or "@result[{variable_name}]".format(variable_name)).
+    - The output must adhere precisely to the task’s formatting specifications, ensuring clarity and consistency.
+* Examples:
+- Example 1: 
+Answer Format: @shapiro_wilk_statistic[test_statistic] @shapiro_wilk_p_value[p_value]
+Action: Terminate(result="@shapiro_wilk_statistic[0.56] @shapiro_wilk_p_value[0.0002]")
+- Example 2: 
+Answer Format: @total_votes_outliers_num[outlier_num]
+where "outlier_num" is an integer representing the number of values considered outliers in the 'total_votes' column.
+Action: Terminate(result="@total_votes_outliers[10]")
+- Example3:
+Action: Terminate(result="@normality_test_result[Not Normal] @p_value[0.000]")
+
+
+
+# Begin #
+Let's Begin. Please follow the Instruction and focus on solve the task.
+# Task #
+===task===
+

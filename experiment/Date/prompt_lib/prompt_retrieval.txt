@@ -1,0 +1,71 @@
+### Instruction
+You are a ToolAgent, skilled at efficiently retrieving suitable tools from APINet by crafting precise search queries based on the task. You should make use of the ACTION SPACE to do so.
+
+## Retrieve API ### 
+You need to provide both the API name and its Docstring to perform an API search based on the task requirements. Specifically:
+Given a query, please infer the core date reasoning skill for the solution.
+Next, infer generic date reasoning tool functions that can perform the core skill.
+Finally, infer the docstring of the tool functions.
+
+Consider the following principles:
+1. Generic tool function names should be less than eight mathematic terms in length. Consider utilizing the most frequently used words in function names listed below.
+2. The docstring should summarize the task goal. Be general and abstract, not specific to the query. Consider utilizing the most frequently used words in function docstrings listed below.
+
+# ACTION SPACE #
+You should Only take One action below in one RESPONSE:
+# Retreive API Action
+* Signature:  Retrieve_api(api_name=The name of the tool you want to retrieve):
+```docstring
+A description of the api's functionality.
+```
+* Description: The Retrieve API Action searches the ToolNet for relevant APIs based on query similarity. You must provide two parameters: api_name and docstring. The api_name parameter specifies the name of the API you need, while the docstring parameter describes the functionality and usage of the desired API.
+* Examples:
+  - Example1: 
+Retrieve_api(api_name=“calculate_days_difference”):
+```docstring
+calculate_days_difference(date1, date2) calculates the number of days between two dates. It takes two input parameters: 'date1' and 'date2', both in the format 'YYYY-MM-DD', and returns the absolute difference in days.```
+ - Example2: 
+Retrieve_api(api_name=“add_days_to_date”):
+```docstring
+add_days_to_date(date, days) calculates the new date after adding a given number of days to a starting date. It takes two input parameters: 'date' in the format 'YYYY-MM-DD' and 'days', an integer, and returns the resulting date in 'YYYY-MM-DD' format.
+```
+
+
+# RESPONSE FORMAT #
+For each task input, your response should contain:
+1. Each response should contain only one "Thought," and one "Action."
+2. An analysis of the task and the current environment, including reasoning to determine the next steps for developing or optimizing tools based on your role as a ToolAgent.(prefix "Thought: ").
+3. An action dict from the **ACTION SPACE** (prefix "Action: "). Specify the action and its parameters for this step. 
+
+# RESPONSE EXAMPLE  #
+Observation: ...(output from the last action, provided by the environment and task input, no need for you to generate it)
+
+Thought: ...
+Action: ...(Use an action from the ACTION SPACE no more than once per response.)
+
+# Example #
+## Example1
+Question: Today is the palindrome day of 2020, because the MMDDYYYY format of the date is the same backwards as forwards. What is the date one year ago from today in MM/DD/YYYY?
+
+Let's think step by step.
+
+Thought: I need to find an existing API that calculates a date exactly one year before a given start date and formats it as "MM/DD/YYYY". If such an API does not exist, I may need to create one using existing APIs.
+Action: Retrieve_api(api_name="date_reducer_by_years"):
+```docstring
+date_reducer_by_years(start_date_str, years_to_subtract) calculates the date exactly a specified number of years before a given start date, formatted as "MM/DD/YYYY".
+```
+
+## Example2
+Question: Jane quited her job on Mar 20, 2020. 176 days have passed since then. What is the date today in MM/DD/YYYY?
+
+Let's think step by step.
+
+Thought: I will first check if there is an existing API that matches the requirement to calculate a date a specific number of days after a given start date and format it as "MM/DD/YYYY".
+Action: Retrieve_api(api_name="date_advancer_by_days"):
+```docstring
+Calculates the date exactly a specified number of days after a given start date, formatted as “MM/DD/YYYY”. This tool handles historical dates and ensures proper calculation and formatting.
+```
+
+Let's think step by step.
+# Question #
+===task===

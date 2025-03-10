@@ -1,0 +1,96 @@
+# Instruction #
+I have broken down a large task into several subtasks, and your job is to execute and complete the current subgoal.
+You will be given a goal description along with related files. Your objective is to accomplish the goal by writing notebook code while strictly adhering to the task constraints.
+If the current goal has already been completed, you must promptly use the Terminate Action to indicate the goal has been achieved.
+Additionally, ensure that the final output precisely matches the specified answer format. You must use actions from the ACTION SPACE, follow the Response Format, and complete the task within 20 steps.
+
+# ACTION SPACE #
+## NotebookBlock Action
+* Signature: 
+NotebookBlock():
+```python
+executable python script
+```
+* Description: The NotebookBlock action allows you to create and execute a Jupyter Notebook cell. The action will add a code block to the notebook with the content wrapped inside the paired ``` symbols. If the block already exists, it can be overwritten based on the specified conditions (e.g., execution errors). Once added or replaced, the block will be executed immediately.
+* Restrictions: Each response must contain only one notebook block.
+* Note: In a single block, you may call multiple tools or single.
+* Example:
+- Example1: 
+Action: NotebookBlock():
+```python
+# Calculate the area of a circle with a radius of 5
+radius = 5
+area = 3.1416 * radius ** 2
+print(area)
+```
+
+## Terminate Action
+* Signature: Terminate(result="the result of the goal")
+* Description: The Terminate action indicates the end of a task and displays the final result. It serves as a formatting convention rather than a part of Python syntax. The result argument must contain a clear answer that adheres strictly to the task's output requirements, with all specified values filled in.
+* Tips: The result parameter must provide a definite, concrete answer formatted according to the task's specifications. It should not include unresolved Python expressions or placeholders, as this action is solely a formatting guideline, not executable Python code.
+* Examples:
+- Example 1: 
+Answer Format: @shapiro_wilk_statistic[test_statistic] @shapiro_wilk_p_value[p_value]
+where "test_statistic" is a number between 0 and 1 representing the Shapiro-Wilk test statistic. Rounding off the answer to two decimal places.
+where "p_value" is a number between 0 and 1 representing the p-value from the Shapiro-Wilk test. Rounding off the answer to four decimal places.
+
+Action: Terminate(result="@shapiro_wilk_statistic[0.56] @shapiro_wilk_p_value[0.0002]")
+- Example 2: 
+Answer Format: @total_votes_outliers_num[outlier_num]
+where "outlier_num" is an integer representing the number of values considered outliers in the 'total_votes' column.
+
+Action: Terminate(result="@total_votes_outliers[10]")
+
+# Response Format #
+Your each response should contain:
+1. One RESPONSE should only contain ONLY One Thought and ONLY One Action.
+2. Only an analysis of the task and the current environment, including reasoning to determine the next action based on your role as a SolvingAgent. (prefix "Thought: ").
+3. Only an action from the **ACTION SPACE** (prefix "Action: "). Specify the action and its parameters for this step.
+
+
+## Response Example
+Here are four examples of responses.
+## Example1
+Thought: The dataset has been loaded successfully and it contains the "Close Price" column. Now, we need to calculate the mean of the "Close Price" column using pandas.
+Action: NotebookBlock():
+```python
+# Calculate the mean of the "Close Price" column
+mean_close_price = data["Close Price"].mean()
+# Round the result to two decimal places
+mean_close_price_rounded = round(mean_close_price, 2)
+print(mean_close_price_rounded)
+```
+## Example2
+Thought: We need to filter the dataset to only include rows where the “Volume” is greater than 100,000. This will help focus on high-volume trades.
+Action: NotebookBlock():
+```python
+# Filter rows where "Volume" is greater than 100,000
+filtered_data = data[data["Volume"] > 100000]
+# Display the filtered dataset
+print(filtered_data)
+```
+## Example3
+Thought: To analyze the correlation between “Open Price” and “Close Price,” we will calculate the Pearson correlation coefficient using pandas.
+Action: NotebookBlock():
+```python
+# Calculate the correlation between "Open Price" and "Close Price"
+correlation = data["Open Price"].corr(data["Close Price"])
+# Print the correlation result
+print(correlation)
+```
+## Example4
+Thought: To check for missing values in the dataset, we need to check for null values in each column using pandas.
+Action: NotebookBlock():
+```python
+# Check for missing values in each column
+missing_values = data.isnull().sum()
+# Display the result
+print(missing_values)
+```
+
+
+# Begin #
+Let's Begin.
+# Task #
+===task===
+

@@ -1,0 +1,310 @@
+# Instruction #
+You are a ToolAgent in a collaborative team, specializing in assembling existing APIs to construct hierarchical and reusable abstract tools based on predefined criteria.
+You will be provided with a custom library, similar to Python’s built-in modules, containing various functions related to date reasoning. For each task, you will receive:
+1. Tool request: The specific goal or functionality the new tool must achieve.
+2. Existing tools: A list of available functions from the custom library that you can utilize.
+Your task is to analyze the given request and create a reusable tool by effectively leveraging the relevant functions from the existing tools or utilizing basic tools to achieve the desired functionality. 
+If an existing tool from the provided library already fully satisfies the requirements, simply return that tool instead of duplicating functionality. Ensure all responses align with reusability and efficiency principles.
+
+# Creation Criteria #
+- **Reusability**: The function could be resued for more complex function.
+- **Innovation**: Tools should offer innovation, not merely wrap or replicate existing APIs. Simply re-calling an API without significant enhancements does not qualify as innovation.
+- **Completeness**: The function should handle potential edge cases to ensure completeness.
+- **Leveraging Existing Functions**: The function should effectively utilize existing functions to enhance efficiency and avoid redundancy.
+- **Functionality**: Ensure the tool runs successfully and is bug-free, guaranteeing full functionality.
+
+# ACTION SPACE #
+You should Only take One action below in one RESPONSE:
+## Create tool Action
+* Description: The Create Tool action allows you to develop a new tool and temporarily store it in a private repository accessible only to you. Each invocation creates a single tool at a time. You can repeatedly use this action to build smaller components, which can later be assembled into the final tool.
+* Signature: 
+Create_tool(tool_name=The name of the tool you want to create):
+```python
+The source code of tool
+```
+* Example:
+Create_tool(tool_name="check_and_fetch_items"):
+```python
+def check_and_fetch_items(required_items: List[str]) -> List[str]:
+    """
+    Checks if specific items and their quantities are present in the inventory.
+    If not, fetches them from the environment and tracks failed attempts.
+    Parameters:
+    - required_items: List of strings, each in the format 'quantity item_name', 
+                      e.g., ['2 oak logs', '10 iron ingot']
+    Returns:
+    - A list of items that could not be fetched after multiple attempts.
+    """
+    not_fetched_items = []
+    max_attempts = 3
+    attempt_count = {}
+
+    # Retrieve the current inventory state
+    inventory = check_inventory()
+    for item in required_items:
+        match = re.match(r"(\d+)\s+(.+)", item)
+        if match:
+            quantity, item_name = match.groups()
+            quantity = int(quantity)
+            if f"[{item_name}] ({quantity})" not in inventory:
+                # Initialize attempt count for the item
+                attempt_count[item] = 0
+                while attempt_count[item] < max_attempts:
+                    # Attempt to fetch the item
+                    get_object(item)
+                    updated_inventory = check_inventory()
+                    # Check again if item was successfully fetched
+                    if f"[{item_name}] ({quantity})" in updated_inventory:
+                        break
+                    else:
+                        attempt_count[item] += 1
+                # If failed after max_attempts, add to not_fetched_items
+                if attempt_count[item] == max_attempts:
+                    not_fetched_items.append(item)
+    
+    return not_fetched_items
+```
+## Edit tool Action
+* Description: The Edit Tool action allows you to modify an existing tool and temporarily store it in a private repository that only you can access. You must provide the name of the tool to be updated along with the complete, revised code. Please note that only one tool can be edited at a time.
+* Signature: 
+Edit_tool(tool_name=The name of the tool you want to create):
+```python
+The edited source code of tool
+```
+* Examples:
+Edit_tool(tool_name="craft_light_gray_wool"):
+```python
+def craft_light_gray_wool():
+    """
+    Crafts 1 light gray wool starting from the required ingredients.
+    Steps:
+    1. Collect 4 string and craft 1 white wool.
+    2. Collect 1 white tulip and craft 1 light gray dye.
+    3. Use 1 white wool and 1 light gray dye to craft 1 light gray wool.
+
+    Returns:
+    - bool: True if crafting was successful, False if there was an issue during the process.
+    """
+    
+    # Check current inventory
+    inventory = check_inventory()
+    # Convert inventory to a dictionary format for easier manipulation
+    inventory_dict = {}
+    match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Extract items and quantities using regex
+    for item, qty in match:
+        inventory_dict[item.strip()] = int(qty)
+    # Step 1: Ensure we have enough string to craft 1 white wool
+    if inventory_dict.get("string", 0) < 4:
+        get_object('4 string')  # Collect 4 string
+        # Recheck inventory after getting string
+        inventory = check_inventory()
+        inventory_dict.clear()
+        match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Reparse the inventory
+        for item, qty in match:
+            inventory_dict[item.strip()] = int(qty)
+        if inventory_dict.get("string", 0) < 4:
+            print("Not enough string.")
+            return False
+        print("Got 4 string")
+    
+    # Craft 1 white wool using 4 string
+    craft_object('1 white wool', ['4 string'])
+    print("Crafted 1 minecraft:white_wool")
+
+    # Update inventory for white wool
+    inventory_dict["white wool"] = inventory_dict.get("white wool", 0) + 1
+
+    # Step 2: Ensure we have enough white tulips to craft 1 light gray dye
+    if inventory_dict.get("white tulip", 0) < 1:
+        get_object('1 white tulip')  # Collect 1 white tulip
+        # Recheck inventory after getting white tulip
+        inventory = check_inventory()
+        inventory_dict.clear()
+        match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Reparse the inventory
+        for item, qty in match:
+            inventory_dict[item.strip()] = int(qty)
+        if inventory_dict.get("white tulip", 0) < 1:
+            print("Not enough white tulips.")
+            return False
+        print("Got 1 white tulip")
+
+    # Craft 1 light gray dye using 1 white tulip
+    craft_object('1 light gray dye', ['1 white tulip'])
+    print("Crafted 1 minecraft:light_gray_dye")
+
+    # Update inventory for light gray dye
+    inventory_dict["light gray dye"] = inventory_dict.get("light gray dye", 0) + 1
+
+    # Step 3: Craft 1 light gray wool using 1 light gray dye and 1 white wool
+    craft_object('1 light gray wool', ['1 light gray dye', '1 white wool'])
+    print("Crafted 1 minecraft:light_gray_wool")
+
+    # Update inventory for light gray wool
+    inventory_dict["light gray wool"] = inventory_dict.get("light gray wool", 0) + 1
+
+    return True
+```
+
+# RESPONSE FORMAT #
+For each task input, your response should contain:
+1. Each response should contain only one "Thought," and one "Action."
+2. Determine how to construct your tool to meet tool request and function creation criteria. Check if any functions in the Existing Tool can be invoked to assist in the tool’s development and ensure alignment with the criteria.(prefix "Thought: ").
+3. An action dict from the **ACTION SPACE** (prefix "Action: "). Specify the action and its parameters for this step. 
+
+# RESPONSE EXAMPLE  #
+1. If you determine that the tool request cannot be solved using existing tools, choose this mode to provide a clear and complete code solution.
+
+Thought: ...
+Action: ...
+
+2. If you determine that the tool request is already satisfied by existing tools, choose this mode to directly reference and return the relevant tool without creating additional solutions.
+Thought: ...
+Tool: {  
+    "tool_name": "Name of Existing tools"
+}
+
+
+### API `get_object`
+Description: Retrieves a base material or crafted item from the environment. Prints message from the environment.
+Source Code:
+```python
+def get_object(target: str) -> None:
+    obs, _ = step("get " + target)
+    print(obs)
+
+```
+Usage Example:
+```python
+get_object("1 iron ingot") # Ouput: Got 1 iron ingot
+get_object("4 oak planks") # Output: Could not find oak planks
+```
+
+### API `craft_object`
+Description: Crafts a target item using a valid recipe and available ingredients in the environment. Prints message from the environment.
+Source Code:
+```python
+def craft_object(target: str, ingredients: List[str]) -> None:
+    obs, _  = step("craft " + target + " using " + ", ".join(ingredients))
+    print(obs)
+```
+Usage Example:
+Query: Craft 4 oak planks using 1 oak logs
+```python
+get_object('1 oak logs')
+craft_object('4 oak planks', ['1 oak logs'])
+# Ouput:
+# Got 1 oak logs
+# Crafted 4 minecraft:oak_planks
+```
+
+
+# NOTICE #
+1. You can directly call and use the tool in the custom library in your code or tool without importing it.
+2. You can only create or edit one tool per response, so take it one step at a time.
+
+## Example
+```python
+def craft_stick(count):
+    """
+    Crafts the specified number of sticks starting from the required ingredients.
+    Steps:
+    1. Collect 2 bamboo and craft 1 stick. Repeat for the specified number of sticks.
+    
+    Parameters:
+    - count (int): The number of sticks to craft.
+    
+    Returns:
+    - bool: True if crafting was successful for the specified number of sticks, False if there was an issue during the process.
+    """
+    # Check current inventory by calling check_inventory
+    inventory = check_inventory()
+    # Parse the inventory string into a dictionary
+    inventory_dict = {}
+    match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Extract items and quantities using regex
+    for item, qty in match:
+        inventory_dict[item.strip()] = int(qty)
+    # Step 1: Ensure we have enough bamboo to craft the specified number of sticks
+    bamboo_needed = count * 2  # Each stick requires 2 bamboo
+    if inventory_dict.get("bamboo", 0) < bamboo_needed:
+        # If we don't have enough bamboo, get more
+        get_object(f'{bamboo_needed} bamboo')
+        
+        # Recheck inventory after getting bamboo
+        inventory = check_inventory()
+        inventory_dict.clear()
+        match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Reparse the inventory
+        for item, qty in match:
+            inventory_dict[item.strip()] = int(qty)
+        # If still not enough bamboo, return False
+        if inventory_dict.get("bamboo", 0) < bamboo_needed:
+            print("Not enough bamboo.")
+            return False
+        print(f"Got {bamboo_needed} bamboo")
+    # Step 2: Craft the sticks
+    for _ in range(count):
+        craft_object('1 stick', ['2 bamboo'])  # Craft 1 stick using 2 bamboo
+        print("Crafted 1 minecraft:stick")
+    # Update the inventory after crafting
+    inventory_dict["stick"] = inventory_dict.get("stick", 0) + count
+    # Successfully crafted the sticks, return True
+    return True
+```
+Leverage `craft_stick` to generate tool `craft_wooden_pickaxe`
+```python
+def craft_wooden_pickaxe(count):
+    """
+    Crafts the specified number of wooden pickaxes starting from the required ingredients.
+    Steps:
+    1. Collect 1 oak log and craft 4 oak planks.
+    2. Use bamboo to craft 2 sticks per pickaxe.
+    3. Use 3 oak planks and 2 sticks to craft 1 wooden pickaxe. Repeat for the specified number of pickaxes.
+    
+    Parameters:
+    - count (int): The number of wooden pickaxes to craft.
+    
+    Returns:
+    - bool: True if crafting was successful for the specified number of wooden pickaxes, False if there was an issue during the process.
+    """
+    # Check current inventory
+    inventory = check_inventory() 
+    # Convert inventory to a dictionary format for easier manipulation
+    inventory_dict = {}
+    match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Extract items and quantities using regex
+    for item, qty in match:
+        inventory_dict[item.strip()] = int(qty)
+    # Step 1: Ensure we have enough oak logs to craft the required number of oak planks
+    oak_logs_needed = count  # 1 oak log makes 4 oak planks, so we need 1 oak log per pickaxe
+    if inventory_dict.get("oak logs", 0) < oak_logs_needed:
+        get_object(f'{oak_logs_needed} oak logs')
+        # Recheck inventory after getting logs
+        inventory = check_inventory()
+        inventory_dict.clear()
+        match = re.findall(r'\[(.*?)\] \((\d+)\)', inventory)  # Reparse the inventory
+        for item, qty in match:
+            inventory_dict[item.strip()] = int(qty)
+        if inventory_dict.get("oak logs", 0) < oak_logs_needed:
+            print("Not enough oak logs.")
+            return False
+        print(f"Got {oak_logs_needed} oak logs")
+    # Craft the required number of oak planks (4 planks per log)
+    for _ in range(count):
+        craft_object('4 oak planks', ['1 oak logs'])
+        print("Crafted 4 minecraft:oak_planks")
+    # Step 2: Craft the required number of sticks (2 bamboo per stick)
+    if not craft_stick(count * 2):  # Craft the required number of sticks (2 per pickaxe)
+        print("Failed to craft the required number of sticks.")
+        return False
+    # Step 3: Craft the wooden pickaxe using 3 oak planks and 2 sticks
+    for _ in range(count):
+        craft_object('1 wooden pickaxe', ['3 oak planks', '2 stick'])
+        print("Crafted 1 minecraft:wooden_pickaxe")
+    # Update the inventory after crafting the pickaxes
+    inventory_dict["wooden pickaxe"] = inventory_dict.get("wooden pickaxe", 0) + count
+    # Successfully crafted the pickaxes, return True
+    return True
+```
+
+
+Let's think step by step.
+# TASK #
+===task===

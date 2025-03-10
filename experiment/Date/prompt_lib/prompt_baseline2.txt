@@ -1,0 +1,122 @@
+Your task is to solve simple word problems by creating Python programs. 
+Please show your thoughts in python codes.
+Please wrap your codes in ```python ... ``` to make it one whole code block.
+
+## Examples
+
+### Question
+
+In the US, Thanksgiving is on the fourth Thursday of November. Today is the US Thanksgiving of 2001. What is the date one week from today in MM/DD/YYYY?
+
+### Solution Code
+```python
+from datetime import date, time, datetime
+from dateutil.relativedelta import relativedelta
+import calendar
+date_1st_thu = date(2001,11,1)
+while date_1st_thu.weekday() != calendar.THURSDAY:
+    date_1st_thu += relativedelta(days=1)
+n_days_of_a_week = 7
+days_from_1st_to_4th_thu = (4-1) * n_days_of_a_week
+date_today = date_1st_thu + relativedelta(days=days_from_1st_to_4th_thu)
+date_1week_from_today = date_today + relativedelta(weeks=1)
+answer = date_1week_from_today.strftime("%m/%d/%Y")
+# print the answer
+print(answer)
+```
+
+### Question
+
+Yesterday was 12/31/1929. Today could not be 12/32/1929 because December has only 31 days. What is the date tomorrow in MM/DD/YYYY?
+
+### Solution Code
+```python
+from datetime import date, time, datetime
+from dateutil.relativedelta import relativedelta
+date_yesterday = date(1929,12,31)
+date_today = date_yesterday + relativedelta(days=1)
+date_tomorrow = date_today + relativedelta(days=1)
+answer = date_tomorrow.strftime("%m/%d/%Y")
+# print the answer
+print(answer)
+```
+
+### Question
+
+The day before yesterday was 11/23/1933. What is the date one week from today in MM/DD/YYYY?
+
+### Solution Code
+```python
+from datetime import date, time, datetime
+from dateutil.relativedelta import relativedelta
+date_day_before_yesterday = date(1933,11,23)
+date_today = date_day_before_yesterday + relativedelta(days=2)
+date_1week_from_today = date_today + relativedelta(weeks=1)
+answer = date_1week_from_today.strftime("%m/%d/%Y")
+print(answer)
+```
+
+### Question
+
+Jane was born on the last day of Feburary in 2001. Today is her 16-year-old birthday. What is the date tomorrow in MM/DD/YYYY?
+
+### Solution Code
+```python
+from datetime import date, time, datetime
+from dateutil.relativedelta import relativedelta
+import calendar
+is_leap_2001 = calendar.isleap(2001)
+if is_leap_2001:
+    date_jane_birth = date(2001,2,29)
+else:
+    date_jane_birth = date(2001,2,28)
+date_today = date_jane_birth + relativedelta(years=16)
+date_tomorrow = date_today + relativedelta(days=1)
+answer = date_tomorrow.strftime("%m/%d/%Y")
+# print the answer
+print(answer)
+```
+
+
+### Question
+
+Today's meeting is rescheduled to 11 am tomorrow, 10/16/1924. What is the date today in MM/DD/YYYY?
+
+### Solution Code
+```python
+from datetime import date, time, datetime
+from dateutil.relativedelta import relativedelta
+date_meeting = date(1924,10,16)
+date_today = date_meeting - relativedelta(days=1)
+answer = date_today.strftime("%m/%d/%Y")
+# print the answer
+print(answer)
+```
+
+### Question
+
+Today is the second day of the third month of 1966. What is the date yesterday in MM/DD/YYYY?
+
+### Solution Code
+```python
+from datetime import date
+from dateutil.relativedelta import relativedelta
+# The given date for the problem
+year = 1966
+month = 3
+day = 2
+# Set the given date
+date_today = date(year, month, day)
+# Calculate yesterday's date
+date_yesterday = date_today + relativedelta(days=-1)
+# Format the result
+answer = date_yesterday.strftime("%m/%d/%Y")
+print(answer)
+```
+
+## Begin!
+Please wrap your codes in ```python ... ``` to make it one whole code block.
+### Question
+===task===
+### Solution code
+
