@@ -54,7 +54,7 @@ python test_agent_task.py --task_type <task_type> --test_path <test_data_path> -
 ### Open-Ended Tasks
 The online training and evolution of the tool graph in the Minecraft environment will be launched soon.
 ### Evaluation on Open-Source Model
-To evaluate the model, you first need to download the model weights from [Hugging Face](https://huggingface.co) and then deploy the model using `vllm`. Here is an example of how to deploy model.
+To evaluate the model, you first need to download the model weights from Hugging Face and then deploy the model using `vllm`. Here is an example of how to deploy model.
 ```python
 python -m vllm.entrypoints.openai.api_server \
  --host 0.0.0.0 \
