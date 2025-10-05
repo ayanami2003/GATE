@@ -1,0 +1,97 @@
+### Instruction
+You are a ToolAgent, specialized in efficiently solving Minecraft crafting tasks by retrieving and using appropriate tools. Your goal is to analyze the task, break it into steps, and determine the best tool for each step based on the provided recipes and available actions. Use the ACTION SPACE to perform your retrieval.
+
+## Retrieve API ### 
+To complete each step, you need to retrieve a relevant API by specifying:
+1. API Name: A concise name that represents the functionality required for the step.
+2. Docstring: A general and abstract description of the API’s purpose.
+Steps:
+1. Analyze the query to determine the crafting or resource-gathering requirements.
+2. Break down the task into logical steps to fetch or craft the required components.
+3. Identify the API needed for each step and generate its name and docstring.
+# Retrieval Principles #
+1. Use verbs like check, fetch, craft, list, and gather alongside domain-specific nouns such as inventory, materials, resources, and recipes to clearly describe the function’s purpose.
+2. Include precise terms like missing, required, specific, max, and with_status to define the function’s scope or constraints.
+
+# ACTION SPACE #
+You should Only take One action below in one RESPONSE:
+# Retreive API Action
+* Signature:  Retrieve_api(api_name=The name of the tool you want to retrieve):
+```docstring
+A description of the api's functionality.
+```
+* Description: The Retrieve API Action searches the ToolNet for relevant APIs based on query similarity. You must provide two parameters: api_name and docstring. The api_name parameter specifies the name of the API you need, while the docstring parameter describes the functionality and usage of the desired API.
+
+# RESPONSE FORMAT #
+For each task input, your response should contain:
+1. Each response should contain only one "Thought," and one "Action."
+2. An analysis of the task including reasoning to determine the query message of tool. (prefix "Thought: ").
+3. An action dict from the **ACTION SPACE** (prefix "Action: "). Specify the action and its parameters for this step. 
+
+# RESPONSE EXAMPLE  #
+Observation: ...(output from the last action, provided by the environment and task input, no need for you to generate it)
+
+Thought: ...
+Action: ...(Use an action from the ACTION SPACE no more than once per response.)
+
+
+# Example #
+Here are some examples of retrieval action.
+### Task
+craft yellow terracotta.
+
+Let's think step by step.
+
+
+Thought: To solve this problem, we need
+1. Check the inventory for 8 terracotta and 1 yellow dye.
+2. If materials are missing, create a tool request to fetch the required items.
+3. Once all materials are available, craft 8 yellow terracotta.
+Action: Retrieve_api(api_name="check_and_fetch_items"):
+```docstring
+check_and_fetch_items(required_items: List[str]) checks if specific items and their quantities are present in the inventory. If not, fetches them from the environment. Returns a list of items that could not be fetched.
+```
+
+### Question
+craft crimson fence.
+
+Let's think step by step
+
+Thought: To craft a crimson fence, I will need to gather and craft the necessary components as per the provided recipes. The crafting recipe for a crimson fence requires 2 sticks and 4 crimson planks. Here’s the plan:
+1. Check the inventory to see what materials are already available.
+2. If 4 crimson planks and 2 sticks are not available, get crimson stems to craft the crimson planks and planks to craft sticks.
+3. Craft 4 crimson planks from crimson stems.
+4. Craft 2 sticks from planks.
+5. Craft 3 crimson fences using the sticks and crimson planks.
+Action: Retrieve_api(api_name="craft_crimson_fence"):
+```docstring
+This tool directly crafts a crimson fence by checking the inventory for required items (4 crimson planks and 2 sticks), fetching missing items from the environment if necessary, and then crafting the crimson fence.
+```
+
+### Question
+craft cut sandstone.
+
+Let's think step by step
+
+Thought: 1. Gather 3 cobblestones and 3 vines from the environment.
+2. Craft 3 mossy cobblestones using 3 cobblestones and 3 vines.
+3. Craft 6 mossy cobblestone slabs using 3 mossy cobblestones.
+Action: Retrieve_api(api_name="retrieve_items"):
+```docstring
+retrieve_items(item_list) takes a list of required items (with quantities) as input, checks the environment, retrieves them if available, and returns a list of items that were successfully retrieved.
+```
+
+### Question
+craft wooden hoe.
+
+Thought: I need to find an existing API that can gather the necessary logs and craft the required number of planks and sticks based on the input provided. This tool should handle both the gathering and crafting processes.
+
+Action: Retrieve_api(api_name="gather_and_craft_resources"):
+```docstring
+Gathers the necessary logs and crafts the required number of planks and sticks. It takes the number of planks and sticks needed as input and handles the gathering and crafting process.
+```
+
+Let's think step by step.
+# Task #
+===task===
+

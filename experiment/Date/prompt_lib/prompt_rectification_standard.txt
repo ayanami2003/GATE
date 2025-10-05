@@ -1,0 +1,111 @@
+### Instruction
+Your original codes have met some errors when executing, please rectify your codes.
+You should generate the whole one new piece of code, instead of generating a snippet.
+Wrap your code in ```python\n ... \n``` to make it a one whole code block.
+Pay attention to the conditions in question before modifying.
+Your goal is answer the question correctly instead of just execute the code successfully.
+If necessary, you can also generate a whole new tool. Change your way of thinking to solve the problem.
+
+## Examples
+### Question
+What is the date one week from today if today is the US Thanksgiving of 2001 (fourth Thursday of November)?
+### Original Codes
+```python
+from datetime import date
+from dateutil.relativedelta import relativedelta
+import calendar
+def calculate_date_one_week_from_thanksgiving(year):
+    """
+    Calculates the date one week from Thanksgiving (fourth Thursday of November) in a given year.
+    """
+    date_1st_thu = date(year, 11, 1)
+    while date_1st_thu.weekday() != calendar.THURSDAY:
+        date_1st_thu += relativedelta(days=1)
+    days_from_1st_to_4th_thu = (4 - 1) * 7
+    thanksgiving_date = date_1st_thu + relativedelta(days=days_from_1st_to_4th_thu)
+    date_one_week_from_today = thanksgiving_date + relativedelta(weeks=1)
+    return date_one_week_from_today.strftime("%m/%d/%Y")
+print("Final Answer:", calculate_date_one_week_from_thanksgiving(2001))
+```
+### Error Information
+Traceback (most recent call last):
+File “test_code.py”, line 12, in 
+print(“Final Answer:”, calculate_date_one_week_from_thanksgiving(2001))
+File “test_code.py”, line 6, in calculate_date_one_week_from_thanksgiving
+date_1st_thu += relativedelta(days=1)
+TypeError: unsupported operand type(s) for +=: ‘datetime.date’ and ‘relativedelta.relativedelta’
+### Rectified Code
+The error occurs because datetime.date objects do not support direct addition of relativedelta objects. To fix this, I should ensure that the addition uses a new assignment instead of an in-place operation like +=.
+```python
+from datetime import date
+from dateutil.relativedelta import relativedelta
+import calendar
+def calculate_date_one_week_from_thanksgiving(year):
+    """
+    Calculates the date one week from Thanksgiving (fourth Thursday of November) in a given year.
+    """
+    date_1st_thu = date(year, 11, 1)
+    while date_1st_thu.weekday() != calendar.THURSDAY:
+        date_1st_thu = date_1st_thu + relativedelta(days=1)
+    days_from_1st_to_4th_thu = (4 - 1) * 7
+    thanksgiving_date = date_1st_thu + relativedelta(days=days_from_1st_to_4th_thu)
+    date_one_week_from_today = thanksgiving_date + relativedelta(weeks=1)
+    return date_one_week_from_today.strftime("%m/%d/%Y")
+print("Final Answer:", calculate_date_one_week_from_thanksgiving(2001))
+```
+
+
+### Question
+The day before yesterday was 11/23/1933. What is the date one week from today?
+### Original Codes
+```python
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
+def calculate_date_one_week_from_given_date(day_before_yesterday_str):
+    """
+    Calculate the date one week from today, given the day before yesterday's date in MM/DD/YYYY format.
+    """
+    day_before_yesterday = date.strptime(day_before_yesterday_str, "%m/%d/%Y").date()
+    today = day_before_yesterday + relativedelta(days=2)
+    one_week_from_today = today + relativedelta(weeks=1)
+    return one_week_from_today.strftime("%m/%d/%Y")
+
+print("Final Answer:", calculate_date_one_week_from_given_date("11/23/1933"))
+```
+### Error Information
+Traceback (most recent call last):
+File “test_code.py”, line 12, in 
+print(“Final Answer:”, calculate_date_one_week_from_given_date(“11/23/1933”))
+File “test_code.py”, line 6, in calculate_date_one_week_from_given_date
+day_before_yesterday = date.strptime(day_before_yesterday_str, “%m/%d/%Y”).date()
+AttributeError: type object ‘date’ has no attribute ‘strptime’
+### Rectified Code
+The date class from datetime does not have a strptime method. Instead, the datetime class should be used for parsing dates.
+```python
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
+def calculate_date_one_week_from_given_date(day_before_yesterday_str):
+    """
+    Calculate the date one week from today, given the day before yesterday's date in MM/DD/YYYY format.
+    """
+    day_before_yesterday = datetime.strptime(day_before_yesterday_str, "%m/%d/%Y").date()
+    today = day_before_yesterday + relativedelta(days=2)
+    one_week_from_today = today + relativedelta(weeks=1)
+    return one_week_from_today.strftime("%m/%d/%Y")
+print("Final Answer:", calculate_date_one_week_from_given_date("11/23/1933"))
+```
+### Question
+
+Jane is celebrating the last day of January 2012. What is the date 10 days ago?
+
+
+## Begin!
+Let's begin.
+### Question
+===task===
+### Original Codes
+===ori===
+### Error Information
+===err===
+### Rectified Code

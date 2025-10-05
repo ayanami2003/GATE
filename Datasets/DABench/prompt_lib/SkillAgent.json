@@ -1,0 +1,62 @@
+[
+    {
+    "agent_name": "SolvingAgent",
+    "llm_config": {
+        "model": "gpt-4o",
+        "temperature": 0.0,
+        "max_tokens": 1200,
+        "top_p": 0.95
+    },
+    "available_action": ["MakePlan", "ToolRequest", "NotebookBlock", "Terminate"],
+    "system_prompt": "Datasets/DABench/prompt_lib/solvingagent_prompt2.txt",
+    "memory_window_size": 10
+    },
+    {
+        "agent_name": "ToolAgent",
+        "llm_config": {
+            "model": "gpt-4o",
+            "temperature": 0.2,
+            "max_tokens": 1200,
+            "top_p": 0.95
+        },
+        "available_action": ["CreateTool", "EditTool"],
+        "system_prompt": "Datasets/DABench/prompt_lib/toolagent_prompt2.txt",
+        "memory_window_size": 10
+    },
+    {
+        "agent_name": "CheckStage2Agent",
+        "llm_config": {
+            "model": "gpt-4o",
+            "temperature": 0.0,
+            "max_tokens": 1200,
+            "top_p": 0.95
+        },
+        "available_action": ["Python", "Feedback", "SendAPI"],
+        "system_prompt": "Datasets/DABench/prompt_lib/self_check_stage_2_prompt.txt",
+        "memory_window_size": 10
+    },
+    {
+        "agent_name": "CheckStage1Agent",
+        "llm_config": {
+            "model": "gpt-4o",
+            "temperature": 0.0,
+            "max_tokens": 1200,
+            "top_p": 0.95
+        },
+        "available_action": ["Feedback"],
+        "system_prompt": "Datasets/DABench/prompt_lib/self_check_stage_1_prompt.txt",
+        "memory_window_size": 10
+    },
+    {
+        "agent_name": "RetrievalAgent",
+        "llm_config": {
+            "model": "gpt-4o",
+            "temperature": 0.0,
+            "max_tokens": 1200,
+            "top_p": 0.95
+        },
+        "available_action": ["Retrieval"],
+        "system_prompt": "Datasets/DABench/prompt_lib/retrieval_prompt.txt",
+        "memory_window_size": 10
+    }
+]

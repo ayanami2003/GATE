@@ -1,0 +1,105 @@
+Your task is to solve table-reasoning problems by writing Python programs.
+You are given a table. The first row is the name for each column. Each column is seperated by "|" and each row is seperated by "\n".
+Pay attention to the format of the table, and what the question asks.
+
+You may also leverage the following helper functions, but must avoid fabricating and calling undefined function names.
+```python
+===api===
+```
+
+
+Examples: 
+### Table
+Name: None
+Unit: $
+Content:
+Date | Description | Received | Expenses | Available Funds
+ | Balance: end of July | | | $260.85
+8/15 | tote bag | | $6.50 | $254.35
+8/16 | farmers market | | $23.40 | $230.95
+8/22 | paycheck | $58.65 | | $289.60
+### Question
+This is Akira's complete financial record for August. How much money did Akira receive on August 22?
+### Solution code
+```python
+records = {
+    "7/31": {"Description": "Balance: end of July", "Received": "", "Expenses": "", "Available Funds": 260.85},
+    "8/15": {"Description": "tote bag", "Received": "", "Expenses": 6.5, "Available Funds": ""},
+    "8/16": {"Description": "farmers market", "Received": "", "Expenses": 23.4, "Available Funds": ""},
+    "8/22": {"Description": "paycheck", "Received": 58.65, "Expenses": "", "Available Funds": ""}
+}
+# Access the amount received on August 22
+received_aug_22 = records["8/22"]["Received"]
+print("Final Answer: ", received_aug_22)
+```
+
+### Table
+Name: Orange candies per bag
+Unit: bags
+Content:
+Stem | Leaf 
+2 | 2, 3, 9
+3 | 
+4 | 
+5 | 0, 6, 7, 9
+6 | 0
+7 | 1, 3, 9
+8 | 5
+### Question
+A candy dispenser put various numbers of orange candies into bags. How many bags had at least 32 orange candies?
+### Solution code
+```python
+data = {
+    2: [2, 3, 9],
+    3: [],
+    4: [],
+    5: [0, 6, 7, 9],
+    6: [0],
+    7: [1, 3, 9],
+    8: [5]
+}
+# Initialize the count to zero
+count = 0
+# Iterate over the keys in the dictionary
+for key in data:
+    # Combine tenth digit and unit digit
+    if key * 10 + data[key] >= 32:
+        # Increment the count
+        count += 1
+
+# Output the result
+print("Final Answer: ", count)
+```
+
+### Table
+Name: Monthly Savings  
+Unit: $  
+Content:  
+Date  | Description       | Received | Expenses | Available Funds |
+       | Balance: end of May |   |   | $500.00 |
+6/10  | groceries        |   | $45.75 | $454.25 |
+6/15  | gas refill       |   | $30.20 | $424.05 |
+6/25  | salary           | $1200.00 |   | $1624.05 |
+### Question
+How much money did Akira receive on June 25?
+### Solution code
+```python
+import pandas as pd
+records = {
+    "5/31": {"Description": "Balance: end of May", "Received": "", "Expenses": "", "Available Funds": 500.00},
+    "6/10": {"Description": "groceries", "Received": "", "Expenses": 45.75, "Available Funds": ""},
+    "6/15": {"Description": "gas refill", "Received": "", "Expenses": 30.2, "Available Funds": ""},
+    "6/25": {"Description": "salary", "Received": 1200.00, "Expenses": "", "Available Funds": ""}
+}
+# Access the amount received on June 25
+received_june_25 = records["6/25"]["Received"]
+print("Final Answer: ", received_june_25)
+```
+
+===example===
+
+## Begin!
+Please solve the task below and enclose your code within a single code block using ```python```  format.
+
+===task===
+### Solution code

@@ -1,0 +1,71 @@
+Your task is to solve math competition problems by writing Python programs.
+
+You may also leverage the following helper functions, but must avoid fabricating and calling undefined function names.
+```python
+===api===
+```
+
+Examples: 
+
+Examples: 
+Query: Point $P$ lies on the line $x= -3$ and is 10 units from the point $(5,2)$. Find the product of all possible $y$-coordinates that satisfy the given conditions.
+Program: 
+```python
+from sympy import symbols, Eq, solve
+# Define symbolic variable for y-coordinate of point P
+y = symbols('y')
+# Step 1: Given conditions
+x1 = -3  # Point P lies on the vertical line x = -3
+x2, y2 = 5, 2  # Coordinates of the given point (5, 2)
+d = 10  # Distance between point P and (5,2)
+# Step 2: Apply the distance formula
+# Distance formula: sqrt((x2 - x1)^2 + (y - y2)^2) = d
+# Squaring both sides to eliminate the square root:
+# (x2 - x1)^2 + (y - y2)^2 = d^2
+distance_equation = Eq((x2 - x1)**2 + (y - y2)**2, d**2)
+# Step 3: Solve for possible values of y
+y_solutions = solve(distance_equation, y)
+# Step 4: Compute the product of all possible y-values
+product = y_solutions[0] * y_solutions[1]
+# Step 5: Output the final result
+print("Final Answer:", product)
+```
+
+Query: If $3p+4q=8$ and $4p+3q=13$, what is $q$ equal to?
+Program:
+```python
+from sympy import symbols, Eq, solve
+# Define symbolic variables for the unknowns p and q
+p, q = symbols('p q')
+# Step 1: Define the given system of equations
+eq1 = Eq(3 * p + 4 * q, 8)  # Equation 1: 3p + 4q = 8
+eq2 = Eq(4 * p + 3 * q, 13)  # Equation 2: 4p + 3q = 13
+# Step 2: Solve the system of equations for p and q
+solution = solve((eq1, eq2), (p, q))
+# Step 3: Extract and output the value of q
+print("Final Answer:", solution[q])
+```
+
+Query: Simplify $\frac{3^4+3^2}{3^3-3}$. Express your answer as a common fraction.
+Program:
+```python
+from sympy import symbols, simplify
+# Define the variable
+x = symbols('x')
+# Define the expression
+numerator = 3**4 + 3**2
+denominator = 3**3 - 3
+fraction = numerator / denominator
+# Simplify the fraction
+simplified_fraction = simplify(fraction)
+# Print the result
+print("Final Answer:", simplified_fraction)
+```
+
+===example===
+
+## Begin !
+Please generate ONLY the code wrapped in ```python...``` to solve the query below.
+
+Query: ===task===
+Program:
