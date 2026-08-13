@@ -1,3 +1,5 @@
+
+
 # GATE: Graph-based Adaptive Tool Evolution Across Diverse Tasks
 [![arXiv](https://img.shields.io/badge/arXiv-2502.14848-b31b1b.svg)](https://arxiv.org/pdf/2502.14848)
 [![Python Version](https://img.shields.io/badge/python-3.11-b31b1b.svg)](https://github.com/ayanami2003/GATE)
@@ -43,7 +45,7 @@ python test_agent_task.py --task_type <task_type> --test_path <test_data_path> -
 - toolkit_path: Path to the toolkit directory.
 - solving_sys_prompt: Path to the system prompt file.
 - temperature: Temperature for LLM output (default: 0.3).
-- max_tokens: Maximum tokens for LLM (default: 1024).
+- max_tokens: Maximum tokens for LLM (default: 1024 for Code Generation, 2000 for Agent tasks).
 - top_p: Top-p sampling for LLM (default: 0.9).
 - top_k_query: Number of top queries to process (default: 3).
 - top_k_tool: Number of top tools to process (default: 3).
